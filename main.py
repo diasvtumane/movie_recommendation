@@ -14,6 +14,12 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 TOKEN = os.getenv("TELEGRAM_TOKEN")
+CLOUD_RUN_SERVICE_URL = os.getenv("CLOUD_RUN_SERVICE_URL")
+
+if not TOKEN:
+    raise ValueError("TELEGRAM_TOKEN environment variable is not set.")
+if not CLOUD_RUN_SERVICE_URL:
+    raise ValueError("CLOUD_RUN_SERVICE_URL environment variable is not set.")
 
 # Initialize the recommender
 recommender = MovieRecommender('./data/movies.csv')
@@ -70,8 +76,14 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, recommend))
     app.add_handler(CallbackQueryHandler(related_movies))
 
-    # Run the bot
-    app.run_polling()
+    # Use the PORT environment variable set by Cloud Run
+    port = int(os.environ.get("PORT", 8080))
+    app.run_webhook(
+        listen="0.0.0.0",
+        port=port,
+        url_path="webhook",
+        webhook_url=f"{CLOUD_RUN_SERVICE_URL}/webhook",
+    )
 
 if __name__ == "__main__":
     main()
