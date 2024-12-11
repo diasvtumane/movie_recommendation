@@ -14,6 +14,8 @@ Technologies Used
 4. Docker: For containerized deployment.
 5. Google Cloud: Hosting platform for continuous operation.
 
+For Telegram you will need to create a bot using @Botfather to get an API
+
 Why Do I need it?
 I created it because my girlfriend and I always run out of movie ideas. 
 
