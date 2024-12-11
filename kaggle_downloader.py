@@ -1,7 +1,6 @@
 import os
 from kaggle.api.kaggle_api_extended import KaggleApi
 
-# Set the KAGGLE_CONFIG_DIR to the current directory (where kaggle.json is located)
 os.environ['KAGGLE_CONFIG_DIR'] = os.getcwd()
 
 def download_movielens():
